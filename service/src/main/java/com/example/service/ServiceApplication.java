@@ -2,6 +2,17 @@ package com.example.service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.repository.ListCrudRepository;
+import org.springframework.web.servlet.function.HandlerFunction;
+import org.springframework.web.servlet.function.RouterFunction;
+import org.springframework.web.servlet.function.ServerRequest;
+import org.springframework.web.servlet.function.ServerResponse;
+
+import java.util.Map;
+
+import static org.springframework.web.servlet.function.RouterFunctions.route;
+import static org.springframework.web.servlet.function.ServerResponse.ok;
 
 @SpringBootApplication
 public class ServiceApplication {
@@ -10,4 +21,19 @@ public class ServiceApplication {
 		SpringApplication.run(ServiceApplication.class, args);
 	}
 
+    @Bean
+    RouterFunction<ServerResponse> myRoutes(CustomerRepository repository) {
+        return route()
+                .GET("/customers", request -> ok().body(repository.findAll()))
+                .GET("/hello", request -> ok().body(Map.of("message",  "Hello World ")))
+                .build();
+    }
+
 }
+
+record Customer(
+      int id,
+      String name
+){}
+
+interface CustomerRepository extends ListCrudRepository<Customer, Integer> { }
