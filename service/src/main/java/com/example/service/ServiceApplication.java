@@ -21,19 +21,19 @@ public class ServiceApplication {
 		SpringApplication.run(ServiceApplication.class, args);
 	}
 
-    @Bean
-    RouterFunction<ServerResponse> myRoutes(CustomerRepository repository) {
-        return route()
-                .GET("/customers", request -> ok().body(repository.findAll()))
-                .GET("/hello", request -> ok().body(Map.of("message",  "Hello World ")))
-                .build();
-    }
+	@Bean
+	RouterFunction<ServerResponse> myRoutes(CustomerRepository repository) {
+		return route()//
+			.GET("/customers", request -> ok().body(repository.findAll()))//
+			.GET("/hello", request -> ok().body(Map.of("message", "Hello World ")))//
+			.build();
+	}
 
 }
 
-record Customer(
-      int id,
-      String name
-){}
+record Customer(int id, String name) {
+}
 
-interface CustomerRepository extends ListCrudRepository<Customer, Integer> { }
+interface CustomerRepository extends ListCrudRepository<Customer, Integer> {
+
+}
